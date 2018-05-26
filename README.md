@@ -148,7 +148,7 @@ $pipeline->dispense([1, 2]); // -4
 
 ### Chain Dispenser
 
-A chain allows usage of an iterator dispenser as a chain. As opposed to a pipeline, a dispenser within a chain receives a handler to the next dispenser in the chain and can be completely ignore in order to stop further processing of the chain.
+A chain allows usage of an iterator dispenser as a chain. As opposed to a pipeline, a dispenser within a chain receives a handler to the next dispenser in the chain and can be completely ignored in order to stop further processing of the chain.
 
 ```php
 <?php
