@@ -1,0 +1,58 @@
+{
+    "name": "bhittani/dispenser",
+    "type": "library",
+    "description": "Dispense entitites under a disciplined regime",
+    "keywords": ["entity", "dispenser", "chain", "stack", "queue", "middleware", "manager"],
+    "homepage": "https://github.com/kamalkhan/dispenser",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kamal Khan",
+            "email": "shout@bhittani.com",
+            "homepage": "http://bhittani.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/kamalkhan/dispenser/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bhittani\\Dispenser\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bhittani\\Dispenser\\": "tests"
+        }
+    },
+	"extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+	},
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "platform": {
+            "php": "5.5"
+        }
+    },
+    "require": {
+        "php": "^5.5 || ^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8",
+        "friendsofphp/php-cs-fixer": "^2.2"
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "coverage-clover": "phpunit --colors=always --coverage-clover coverage.xml",
+        "cs-check": "php-cs-fixer fix --dry-run --using-cache=no",
+        "cs-fix": "php-cs-fixer fix --using-cache=no",
+        "check": ["@cs-check", "@test"]
+    },
+    "repositories": [
+        { "packagist": false },
+        { "type": "composer", "url": "https://packagist.org" }
+    ]
+}
