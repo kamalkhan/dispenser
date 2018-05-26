@@ -50,7 +50,7 @@ $dispenser = new Dispenser(function ($a, $b) {
     return $a . '.' . $b;
 });
 
-$dispenser->dispense('foo', 'bar'); // 'foo.bar'
+$dispenser->dispense(['foo', 'bar']); // 'foo.bar'
 ```
 
 ### Queue Dispenser
