@@ -1,7 +1,7 @@
 {
     "name": "bhittani/dispenser",
     "type": "library",
-    "description": "Dispense entitites under a disciplined regime",
+    "description": "Dispense entities under a disciplined regime",
     "keywords": ["entity", "dispenser", "chain", "stack", "queue", "middleware", "manager"],
     "homepage": "https://github.com/kamalkhan/dispenser",
     "license": "MIT",

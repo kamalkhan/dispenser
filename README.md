@@ -4,7 +4,7 @@
 [![Packagist Downloads][icon-packagist-downloads]][link-packagist-downloads]
 [![License][icon-license]](LICENSE.md)
 
-Dispense entitites under a disciplined regime.
+Dispense entities under a disciplined regime.
 
 - [Install](#install)
 - [Usage](#usage)
