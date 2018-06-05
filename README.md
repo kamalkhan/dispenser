@@ -287,45 +287,59 @@ Extended dispensers can be created by implementing the `Bhittani\Dispenser\Dispe
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Acme\Application;
-use Bhittani\Dispenser\QueueDispenser;
-use Bhittani\Dispenser\IteratorInterface;
 use Bhittani\Dispenser\DispenserInterface;
 
-class Bootstrapper implements DispenserInterface
+class EventDispenser implements DispenserInterface
 {
-    protected $providers;
+    protected $subscribers = [];
 
-    public function __construct(IteratorInterface $dispensers)
+    public function subscribe($key, DispenserInterface $subscriber)
     {
-        $this->providers = $dispensers;
+        if (! isset($this->subscribers[$key])) {
+            $this->subscribers[$key] = [];
+        }
+
+        $this->subscribers[$key][] = $subscriber;
+
+        return $this;
     }
 
     public function dispense(array $args)
     {
-        $app = array_shift($args);
+        $key = array_shift($args);
 
-        foreach ($this->providers as $provider) {
-            $provider->dispense([$app]);
-            // ...
+        $responses = [];
+
+        if (! isset($this->subscribers[$key])) {
+            return $responses;
         }
+
+        foreach ($this->subscribers[$key] as $subscriber) {
+            $responses[] = $subscriber->dispense($args);
+        }
+
+        return $responses;
     }
 }
 
-$providers = new QueueDispenser;
-$providers->push(new Dispenser(function ($app) {
-    // Register the provider with the application...
-}));
-$providers->push(new Dispenser(function ($app) {
-    // Register the provider with the application...
+$event = new EventDispenser;
+
+$event->subscribe('foo', new Dispenser(function ($a, $b) {
+    return 'foo' . $a . $b;
 }));
 
-$bootstrapper = new Bootstrapper($providers);
-$bootstrapper->dispense([new Application]);
-// ...
+$event->subscribe('bar', new Dispenser(function ($a, $b) {
+    return 'bar' . $a . $b;
+}));
+
+$event->dispense(['foo', 'a', 'b']); // [fooab]
+
+$event->dispense(['bar', 'a', 'b']); // [barab]
 ```
 
-> The above implementation allows bootstrapping of service providers with an application.
+> The above implementation works as an event subscriber and publisher.
+
+> For availability, the `EventDispenser` is also available under the `Bhittani\Dispenser` namespace.
 
 ## Changelog
 
