@@ -23,8 +23,8 @@ class PriorityTest extends TestCase
     {
         $priority = new Priority;
 
-        $priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 3; }), 3);
-        $priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 1; }), 1);
+        $priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 3; }), 1);
+        $priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 1; }), 3);
         $priority->insert(function ($a, $b) { return $a . $b . 2; }, 2);
 
         $this->assertEquals(['ab1', 'ab2', 'ab3'], $priority->dispense('a', 'b'));
