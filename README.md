@@ -6,25 +6,26 @@
 
 Dispense entities under a disciplined regime.
 
-- [Install](#install)
-- [Usage](#usage)
-    - [Dispenser](#dispenser)
+- [Dispenser](#dispenser)
+  - [Install](#install)
+  - [Usage](#usage)
+    - [Dispenser](#dispenser-1)
     - [Queue Dispenser](#queue-dispenser)
     - [Stack Dispenser](#stack-dispenser)
     - [Priority Dispenser](#priority-dispenser)
     - [Pipeline Dispenser](#pipeline-dispenser)
     - [Chain Dispenser](#chain-dispenser)
-        - [Using the chain dispenser as an http middleware](#using-the-chain-dispenser-as-an-http-middleware)
+      - [Using the chain dispenser as an http middleware](#using-the-chain-dispenser-as-an-http-middleware)
     - [Aggregate Dispenser](#aggregate-dispenser)
     - [Delegator Dispenser](#delegator-dispenser)
     - [Creating custom/extended dispensers](#creating-customextended-dispensers)
-        - [Example dispenser implementation](#example-dispenser-implementation)
-- [Changelog](#changelog)
-- [Testing](#testing)
-- [Contributing](#contributing)
-- [Security](#security)
-- [Credits](#credits)
-- [License](#license)
+      - [Example dispenser implementation](#example-dispenser-implementation)
+  - [Changelog](#changelog)
+  - [Testing](#testing)
+  - [Contributing](#contributing)
+  - [Security](#security)
+  - [Credits](#credits)
+  - [License](#license)
 
 ## Install
 
@@ -50,7 +51,7 @@ $dispenser = new Dispenser(function ($a, $b) {
     return $a . '.' . $b;
 });
 
-$dispenser->dispense(['foo', 'bar']); // 'foo.bar'
+$dispenser->dispense('foo', 'bar'); // 'foo.bar'
 ```
 
 ### Queue Dispenser
