@@ -13,7 +13,7 @@ namespace Bhittani\Dispenser;
 
 use SplStack;
 
-class StackDispenser extends SplStack implements DispenserInterface, IteratorInterface
+class Stack extends SplStack implements DispenserInterface
 {
     use IsSpl;
 }

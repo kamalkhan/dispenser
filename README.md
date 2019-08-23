@@ -83,17 +83,17 @@ A stack dispenser maintains a collection of dispensers in a stack.
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Bhittani\Dispenser\Stack;
 use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\StackDispenser;
 
-$stack = new StackDispenser;
+$stack = new Stack;
 
 $stack->push(new Dispenser(function ($a, $b) { return $a . $b . 1; }));
 $stack->push(new Dispenser(function ($a, $b) { return $a . $b . 2; }));
 // Doesn't have to be a dispenser, but recommended.
 $stack->push(function ($a, $b) { return $a . $b . 3; });
 
-$stack->dispense(['a', 'b']); // ['ab3', 'ab2', 'ab1']
+$stack->dispense('a', 'b'); // ['ab3', 'ab2', 'ab1']
 ```
 
 ### Priority Dispenser
