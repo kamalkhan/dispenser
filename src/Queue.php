@@ -13,7 +13,7 @@ namespace Bhittani\Dispenser;
 
 use SplQueue;
 
-class QueueDispenser extends SplQueue implements DispenserInterface, IteratorInterface
+class Queue extends SplQueue implements DispenserInterface
 {
     use IsSpl;
 }

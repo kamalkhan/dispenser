@@ -13,22 +13,13 @@ namespace Bhittani\Dispenser;
 
 trait IsSpl
 {
-    use Process;
+    use Invoker;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function dispense(array $args)
+    /** {@inheritdoc} */
+    public function dispense(...$parameters)
     {
-        $response = [];
-
-        $this->rewind();
-
-        while ($this->valid()) {
-            $response[] = $this->process($this->current(), $args);
-            $this->next();
-        }
-
-        return $response;
+        return array_map(function ($callableOrDispenser) use ($parameters) {
+            return $this->invoke($callableOrDispenser, ...$parameters);
+        }, iterator_to_array($this));
     }
 }

@@ -62,17 +62,17 @@ A queue dispenser maintains a collection of dispensers in a queue.
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Bhittani\Dispenser\Queue;
 use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\QueueDispenser;
 
-$queue = new QueueDispenser;
+$queue = new Queue;
 
 $queue->push(new Dispenser(function ($a, $b) { return $a . $b . 1; }));
 $queue->push(new Dispenser(function ($a, $b) { return $a . $b . 2; }));
 // Doesn't have to be a dispenser, but recommended.
 $queue->push(function ($a, $b) { return $a . $b . 3; });
 
-$queue->dispense(['a', 'b']); // ['ab1', 'ab2', 'ab3']
+$queue->dispense('a', 'b'); // ['ab1', 'ab2', 'ab3']
 ```
 
 ### Stack Dispenser

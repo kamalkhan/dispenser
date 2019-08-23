@@ -11,9 +11,9 @@
 
 namespace Bhittani\Dispenser;
 
-trait Process
+trait Invoker
 {
-    protected function toProcess($dispenserOrCallable)
+    protected function toInvokable($dispenserOrCallable)
     {
         if ($dispenserOrCallable instanceof DispenserInterface) {
             return [$dispenserOrCallable, 'dispense'];
@@ -22,12 +22,8 @@ trait Process
         return $dispenserOrCallable;
     }
 
-    protected function process($dispenserOrCallable, $args)
+    protected function invoke($dispenserOrCallable, ...$parameters)
     {
-        if ($dispenserOrCallable instanceof DispenserInterface) {
-            return call_user_func($this->toProcess($dispenserOrCallable), $args);
-        }
-
-        return call_user_func_array($this->toProcess($dispenserOrCallable), $args);
+        return call_user_func_array($this->toInvokable($dispenserOrCallable), $parameters);
     }
 }
