@@ -25,7 +25,7 @@ class StackTest extends TestCase
 
         $stack->push(new Dispenser(function ($a, $b) { return $a . $b . 1; }));
         $stack->push(new Dispenser(function ($a, $b) { return $a . $b . 2; }));
-        $stack->push(new Dispenser(function ($a, $b) { return $a . $b . 3; }));
+        $stack->push(function ($a, $b) { return $a . $b . 3; });
 
         $this->assertEquals(['ab3', 'ab2', 'ab1'], $stack->dispense('a', 'b'));
     }
