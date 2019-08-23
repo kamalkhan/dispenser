@@ -150,43 +150,42 @@ $pipeline->dispense(10); // 10
 
 ### Chain Dispenser
 
-A chain allows usage of an iterator dispenser as a chain. As opposed to a pipeline, a dispenser within a chain receives a handler to the next dispenser in the chain and can be completely ignored in order to stop further processing of the chain.
+A chain accepts dispensers and work on it as a chain. As opposed to a pipeline, a dispenser within a chain receives a handler to the next dispenser in the chain and can be completely ignored in order to stop further processing of the chain.
 
 ```php
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Bhittani\Dispenser\Chain;
 use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\QueueDispenser;
-use Bhittani\Dispenser\ChainDispenser;
 
-$queue = new QueueDispenser;
+// Accepts an optional fallback dispenser.
+$chain = new Chain(function ($foo, $bar) {
+    return '!';
+});
 
-$queue->push(new Dispenser(function ($str, $next) {
-    return '1f' . $next($str) . '1l';
-}));
-
-$queue->push(new Dispenser(function ($str, $next) {
-    return '2f' . $next($str) . '2l';
+$chain->push(new Dispenser(function ($foo, $bar, $next) {
+    return '(' . $next($foo, $bar) . ')';
 }));
 
 // Doesn't have to be a dispenser, but recommended.
-$queue->push(function ($str, $next) {
-    return '3f' . $next($str) . '3l';
+$chain->push(function ($foo, $bar, $next) {
+    return $foo.$next($foo, $bar);
 });
 
-$chain = new ChainDispenser($queue, function () {
-    // $fallback dispenser.
-    return 0;
+$chain->push(function ($foo, $bar, $next) {
+    return $next($foo, $bar).$bar;
 });
 
-$chain->dispense([2])); // '1f2f3f03l2l1l'
+$chain->dispense('middle', 'ware'); // (middle!ware)
 ```
 
-> The iterator dispenser's discipline will be respected. i.e. if we were to use
-> a stack dispenser, the results would vary due to the difference in the order of dispensation.
+> Every dispenser's discipline will be respected. i.e. if we were to use
+> a stack dispenser, the results would vary due to the potential difference in the order of dispensation.
 
-> The fallback dispenser is optional.
+> Different types of dispensers can be pushed to the same chain.
+
+> The fallback dispenser is optional and does not have a final $next parameter because it will be the last dispenser in the chain.
 
 #### Using the chain dispenser as an http middleware
 
@@ -196,24 +195,33 @@ Due to the powerful discipline of the chain dispenser, we can use it as an http 
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Bhittani\Dispenser\Chain;
+use Bhittani\Dispenser\Queue;
 use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\QueueDispenser;
-use Bhittani\Dispenser\ChainDispenser;
 
-$middlewareQueue = new QueueDispenser;
+$chain = new Chain(function ($request) {
+    return make_a_response_however_you_want_to($request);
+});
 
-$middlewareQueue->push(new Dispenser(function ($request, $next) {
-    // ...
+$chain->push($middlewares = new Queue);
+
+// With a fictional request & response objects,
+// lets record the time spent on the request.
+$middlewares->push(new Dispenser(function ($request, $next) {
+    $request = $request->startTime();
+    $response = $next($request);
+    $request->stopTime();
+
+    return $response->withTime($request->getElapsedTime());
 }));
 
-$middlewareQueue->push(new Dispenser(function ($request, $next) {
-    // ...
+$middlewares->push(new Dispenser(function ($request, $next) {
+    // Do something...
+    return $next($request);
 }));
-
-$chain = new ChainDispenser($middlewareQueue);
 
 // Handle the $request...
-$chain->dispense([$request]);
+$chain->dispense($request);
 ```
 
 ### Aggregate Dispenser
