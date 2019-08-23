@@ -104,17 +104,17 @@ A priority dispenser maintains a collection of dispensers in a priority heap.
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Bhittani\Dispenser\Priority;
 use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\PriorityDispenser;
 
-$ranked = new PriorityDispenser;
+$priority = new Priority;
 
-$ranked->insert(new Dispenser(function ($a, $b) { return $a . $b . 1; }), 2);
-$ranked->insert(new Dispenser(function ($a, $b) { return $a . $b . 2; }), 3);
+$priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 3; }), 3);
+$priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 1; }), 1);
 // Doesn't have to be a dispenser, but recommended.
-$ranked->insert(function ($a, $b) { return $a . $b . 3; }, 1);
+$priority->insert(function ($a, $b) { return $a . $b . 2; }, 2);
 
-$ranked->dispense(['a', 'b']); // ['ab2', 'ab1', 'ab3']
+$priority->dispense('a', 'b'); // ['ab1', 'ab2', 'ab3']
 ```
 
 > The rank is directly proportional to the priority value. In the example above,
