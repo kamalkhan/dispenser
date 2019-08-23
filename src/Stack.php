@@ -16,4 +16,9 @@ use SplStack;
 class Stack extends SplStack implements DispenserInterface
 {
     use IsSpl;
+
+    public function toArray()
+    {
+        return array_values(iterator_to_array($this));
+    }
 }
