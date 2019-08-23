@@ -109,8 +109,8 @@ use Bhittani\Dispenser\Dispenser;
 
 $priority = new Priority;
 
-$priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 3; }), 3);
-$priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 1; }), 1);
+$priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 3; }), 1);
+$priority->insert(new Dispenser(function ($a, $b) { return $a . $b . 1; }), 3);
 // Doesn't have to be a dispenser, but recommended.
 $priority->insert(function ($a, $b) { return $a . $b . 2; }, 2);
 
