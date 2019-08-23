@@ -15,5 +15,5 @@ use SplStack;
 
 class Stack extends SplStack implements DispenserInterface
 {
-    use IsSpl;
+    use AsIterator;
 }

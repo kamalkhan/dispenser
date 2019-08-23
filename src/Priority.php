@@ -15,7 +15,7 @@ use SplPriorityQueue;
 
 class Priority extends SplPriorityQueue implements DispenserInterface
 {
-    use IsSpl;
+    use AsIterator;
 
     /** {@inheritdoc} */
     public function compare($priority1, $priority2)

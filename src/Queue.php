@@ -15,5 +15,5 @@ use SplQueue;
 
 class Queue extends SplQueue implements DispenserInterface
 {
-    use IsSpl;
+    use AsIterator;
 }

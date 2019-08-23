@@ -13,7 +13,7 @@ namespace Bhittani\Dispenser;
 
 use Iterator;
 
-trait IsSpl
+trait AsIterator
 {
     use Invoker;
 
