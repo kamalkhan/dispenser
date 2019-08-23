@@ -122,30 +122,31 @@ $priority->dispense('a', 'b'); // ['ab1', 'ab2', 'ab3']
 
 ### Pipeline Dispenser
 
-A pipeline allows piping through an iterator dispenser (queues, stacks, priority heaps) by passing on the result of the previous piped dispenser onto the next piped dispenser.
+A pipeline allows piping through dispensers by passing on the result of the previous piped dispenser onto the next piped dispenser.
 
 ```php
 <?php
 require_once __DIR__ . '/vendor/autoload.php';
 
+use Bhittani\Dispenser\Stack;
+use Bhittani\Dispenser\Pipeline;
 use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\QueueDispenser;
-use Bhittani\Dispenser\PipelineDispenser;
 
-$queue = new QueueDispenser;
+$pipeline = new Pipeline;
 
-$queue->push(new Dispenser(function ($a, $b) { return $a + $b; })); // (1, 2) => 3
-$queue->push(new Dispenser(function ($n) { return $n - 5; })); // (3) => -2
-// Doesn't have to be a dispenser, but recommended.
-$queue->push(function ($n) { return $n * 2; }); // (-2) => -4
+$pipeline->push($stack = new Stack);
 
-$pipeline = new PipelineDispenser($queue);
+$stack->push(new Dispenser(function ($n) { return $n / 5; })); // 100/5=20
+$stack->push(new Dispenser(function ($n) { return $n + 60; })); // 40+60=100
+$stack->push(function ($n) { return $n * 4; }); // 10*4=40
 
-$pipeline->dispense([1, 2]); // -4
+$pipeline->push(function ($n) { return $n / 2; }); // 20/2=10
+
+$pipeline->dispense(10); // 10
 ```
 
 > The iterator dispenser's discipline will be respected. i.e. if we were to use
-> a stack dispenser, the results would vary due to the difference in the order of dispensation.
+> a priority dispenser, the results would vary due to the potential difference in the order of dispensation.
 
 ### Chain Dispenser
 
