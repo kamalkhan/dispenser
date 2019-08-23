@@ -19,7 +19,7 @@ class StackTest extends TestCase
     }
 
     /** @test */
-    function it_uses_a_stack()
+    function it_dispenses_the_stack()
     {
         $stack = new Stack;
 

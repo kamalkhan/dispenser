@@ -19,7 +19,7 @@ class PriorityTest extends TestCase
     }
 
     /** @test */
-    function it_uses_a_priority()
+    function it_dispenses_the_heap()
     {
         $priority = new Priority;
 
