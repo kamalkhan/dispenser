@@ -75,7 +75,7 @@ class ChainDispenser extends PipelineDispenser
         $args = func_get_args();
 
         array_walk($args, function (&$arg) {
-            if (is_array($arg) && (count($arg) == 1)) {
+            if (is_array($arg) && (1 == count($arg))) {
                 $arg = array_shift($arg);
             }
         });
