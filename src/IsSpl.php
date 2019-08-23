@@ -18,13 +18,13 @@ trait IsSpl
     /** {@inheritdoc} */
     public function dispense(...$parameters)
     {
-        return array_map(function ($callableOrDispenser) use ($parameters) {
-            return $this->invoke($callableOrDispenser, ...$parameters);
+        return array_map(function ($valueOrCallableOrDispenser) use ($parameters) {
+            return $this->invoke($valueOrCallableOrDispenser, $parameters);
         }, $this->toArray());
     }
 
     public function toArray()
     {
-        return iterator_to_array($this);
+        return array_values(iterator_to_array($this));
     }
 }

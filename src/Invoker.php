@@ -13,17 +13,23 @@ namespace Bhittani\Dispenser;
 
 trait Invoker
 {
-    protected function toInvokable($dispenserOrCallable)
+    protected function toInvokable($valueOrCallableOrDispenser)
     {
-        if ($dispenserOrCallable instanceof DispenserInterface) {
-            return [$dispenserOrCallable, 'dispense'];
+        if (is_callable($valueOrCallableOrDispenser)) {
+            return $valueOrCallableOrDispenser;
         }
 
-        return $dispenserOrCallable;
+        if ($valueOrCallableOrDispenser instanceof DispenserInterface) {
+            return [$valueOrCallableOrDispenser, 'dispense'];
+        }
+
+        return function () use ($valueOrCallableOrDispenser) {
+            return $valueOrCallableOrDispenser;
+        };
     }
 
-    protected function invoke($dispenserOrCallable, ...$parameters)
+    protected function invoke($valueOrCallableOrDispenser, array $parameters)
     {
-        return call_user_func_array($this->toInvokable($dispenserOrCallable), $parameters);
+        return call_user_func_array($this->toInvokable($valueOrCallableOrDispenser), $parameters);
     }
 }
