@@ -11,6 +11,8 @@
 
 namespace Bhittani\Dispenser;
 
+use Iterator;
+
 trait IsSpl
 {
     use Invoker;
@@ -25,6 +27,21 @@ trait IsSpl
 
     public function toArray()
     {
-        return array_values(iterator_to_array($this));
+        return $this->flatten(iterator_to_array($this));
+    }
+
+    protected function flatten($items)
+    {
+        if (! (is_array($items) || $items instanceof Iterator)) {
+            return [$items];
+        }
+
+        if ($items instanceof Iterator) {
+            $items = iterator_to_array($items);
+        }
+
+        return array_reduce($items, function ($carry, $item) {
+            return array_merge($carry, $this->flatten($item));
+        }, []);
     }
 }
