@@ -2,8 +2,6 @@
 
 namespace Bhittani\Dispenser;
 
-use PHPUnit\Framework\TestCase;
-
 class DispenserTest extends TestCase
 {
     function foo($a, $b)
@@ -20,13 +18,21 @@ class DispenserTest extends TestCase
     }
 
     /** @test */
+    function it_accepts_a_function()
+    {
+        $dispenser = new Dispenser('strtoupper');
+
+        $this->assertEquals('LOWER', $dispenser->dispense('lower'));
+    }
+
+    /** @test */
     function it_accepts_a_closure()
     {
         $dispenser = new Dispenser(function ($a, $b) {
             return $a . $b;
         });
 
-        $this->assertEquals('ab', $dispenser->dispense(['a', 'b']));
+        $this->assertEquals('ab', $dispenser->dispense('a', 'b'));
     }
 
     /** @test */
@@ -34,7 +40,7 @@ class DispenserTest extends TestCase
     {
         $dispenser = new Dispenser([$this, 'foo']);
 
-        $this->assertEquals('ab', $dispenser->dispense(['a', 'b']));
+        $this->assertEquals('ab', $dispenser->dispense('a', 'b'));
     }
 
     /** @test */
@@ -42,7 +48,7 @@ class DispenserTest extends TestCase
     {
         $dispenser = new Dispenser(new FooDispenser);
 
-        $this->assertEquals('ab', $dispenser->dispense(['a', 'b']));
+        $this->assertEquals('ab', $dispenser->dispense('a', 'b'));
     }
 }
 

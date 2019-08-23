@@ -14,11 +14,11 @@ namespace Bhittani\Dispenser;
 interface DispenserInterface
 {
     /**
-     * Dispense the callback.
+     * Dispense the instance.
      *
-     * @param array $args
+     * @param mixed ...$parameters
      *
      * @return mixed
      */
-    public function dispense(array $args);
+    public function dispense(...$parameters);
 }

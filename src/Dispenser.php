@@ -30,16 +30,14 @@ class Dispenser implements DispenserInterface
         $this->callback = $callback;
     }
 
-    public function __invoke()
+    public function __invoke(...$parameters)
     {
-        return $this->dispense(func_get_args());
+        return $this->dispense(...$parameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function dispense(array $args)
+    /** {@inheritdoc} */
+    public function dispense(...$parameters)
     {
-        return call_user_func_array($this->callback, $args);
+        return call_user_func_array($this->callback, $parameters);
     }
 }
