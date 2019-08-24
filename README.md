@@ -16,8 +16,6 @@ Dispense entities under a disciplined regime.
     - [Pipeline Dispenser](#pipeline-dispenser)
     - [Chain Dispenser](#chain-dispenser)
       - [Using the chain dispenser as an http middleware](#using-the-chain-dispenser-as-an-http-middleware)
-    - [Aggregate Dispenser](#aggregate-dispenser)
-    - [Delegator Dispenser](#delegator-dispenser)
     - [Creating custom/extended dispensers](#creating-customextended-dispensers)
       - [Example dispenser implementation](#example-dispenser-implementation)
   - [Changelog](#changelog)
@@ -222,69 +220,6 @@ $middlewares->push(new Dispenser(function ($request, $next) {
 
 // Handle the $request...
 $chain->dispense($request);
-```
-
-### Aggregate Dispenser
-
-An aggregate stores dispensers tagged by a unique key/slug.
-
-```php
-<?php
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\AggregateDispenser;
-
-$aggregate = new AggregateDispenser;
-
-// Add a dispenser.
-$aggregate->add('lc', new Dispenser(function ($str) {
-    return strtolower($str);
-}));
-
-// Add a built-in php function string as a dispenser.
-$aggregate->add('uc', new Dispenser('strtoupper');
-
-$aggregate->has('foo'); // false
-
-$aggregate->has('lc'); // true
-
-$toLowerCase = $aggregate->get('lc');
-$toLowerCase->dispense(['FoO']); // foo
-
-$toUpperCase = $aggregate->get('uc');
-$toUppercase->dispense(['FoO']); // FOO
-```
-
-> The aggregate keeps a unique key/slug store. A collision replaces the previous delegate at the specified key.
-
-### Delegator Dispenser
-
-A delegator accepts aggregate dispenser delegations. This is more practically used for accepting fallback aggregate lookups that are provided by strangers in your library.
-
-```php
-<?php
-require_once __DIR__ . '/vendor/autoload.php';
-
-use Bhittani\Dispenser\Dispenser;
-use Bhittani\Dispenser\AggregateDispenser;
-use Bhittani\Dispenser\DelegatorDispenser;
-
-$aggregate1 = new AggregateDispenser;
-$aggregate1->add('foo', new Dispenser(function ($str) {
-    return strtolower($str);
-}));
-
-$aggregate2 = new AggregateDispenser;
-$aggregate2->add('bar', new Dispenser(function ($str) {
-    return strtoupper($str);
-}));
-
-$delegator = new DelegatorDispenser;
-$delegator->delegate($aggregate1);
-$delegator->delegate($aggregate2);
-
-$delegator->dispense(['foo', 'BaR']); // bar
 ```
 
 ### Creating custom/extended dispensers
