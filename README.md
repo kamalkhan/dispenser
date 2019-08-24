@@ -6,24 +6,23 @@
 
 Dispense entities under a disciplined regime.
 
-- [Dispenser](#dispenser)
-  - [Install](#install)
-  - [Usage](#usage)
-    - [Dispenser](#dispenser-1)
-    - [Queue Dispenser](#queue-dispenser)
-    - [Stack Dispenser](#stack-dispenser)
-    - [Priority Dispenser](#priority-dispenser)
-    - [Pipeline Dispenser](#pipeline-dispenser)
-    - [Chain Dispenser](#chain-dispenser)
-      - [Using the chain dispenser as an http middleware](#using-the-chain-dispenser-as-an-http-middleware)
-    - [Creating custom/extended dispensers](#creating-customextended-dispensers)
-      - [Example dispenser implementation](#example-dispenser-implementation)
-  - [Changelog](#changelog)
-  - [Testing](#testing)
-  - [Contributing](#contributing)
-  - [Security](#security)
-  - [Credits](#credits)
-  - [License](#license)
+- [Install](#install)
+- [Usage](#usage)
+  - [Dispenser](#dispenser)
+  - [Queue Dispenser](#queue-dispenser)
+  - [Stack Dispenser](#stack-dispenser)
+  - [Priority Dispenser](#priority-dispenser)
+  - [Pipeline Dispenser](#pipeline-dispenser)
+  - [Chain Dispenser](#chain-dispenser)
+    - [Using the chain dispenser as an http middleware](#using-the-chain-dispenser-as-an-http-middleware)
+  - [Creating custom/extended dispensers](#creating-customextended-dispensers)
+    - [Example dispenser implementation](#example-dispenser-implementation)
+- [Changelog](#changelog)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [Security](#security)
+- [Credits](#credits)
+- [License](#license)
 
 ## Install
 
@@ -293,6 +292,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed.
 
 ```shell
 $ git clone https://github.com/kamalkhan/dispenser
+$ cd dispenser
 $ composer install
 $ composer test
 ```
