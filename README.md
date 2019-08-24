@@ -289,7 +289,7 @@ $delegator->dispense(['foo', 'BaR']); // bar
 
 ### Creating custom/extended dispensers
 
-Extended dispensers can be created by implementing the `Bhittani\Dispenser\DispenserInterface` interface. It has only one required method `dispense` which accepts an array. This makes it very simple to mix and utilize other dispensers. The power is in your hands.
+Extended dispensers can be created by implementing the `Bhittani\Dispenser\DispenserInterface` interface. It has only one required method `dispense` which accepts variadic arguments. This makes it very simple to mix and utilize other dispensers. The power is in your hands.
 
 #### Example dispenser implementation
 
@@ -299,7 +299,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use Bhittani\Dispenser\DispenserInterface;
 
-class EventDispenser implements DispenserInterface
+class Dispatcher implements DispenserInterface
 {
     protected $subscribers = [];
 
@@ -314,42 +314,41 @@ class EventDispenser implements DispenserInterface
         return $this;
     }
 
-    public function dispense(array $args)
+    public function dispense(...$parameters)
     {
-        $key = array_shift($args);
-
-        $responses = [];
+        $key = array_shift($parameters);
 
         if (! isset($this->subscribers[$key])) {
-            return $responses;
+            return [];
         }
 
-        foreach ($this->subscribers[$key] as $subscriber) {
-            $responses[] = $subscriber->dispense($args);
-        }
-
-        return $responses;
+        return array_map(function ($subscriber) use ($parameters) {
+            return $subscriber->dispense($parameters);
+        }, $this->subscribers[$key]);
     }
 }
 
-$event = new EventDispenser;
+$dispatcher = new Dispatcher;
 
-$event->subscribe('foo', new Dispenser(function ($a, $b) {
-    return 'foo' . $a . $b;
+$dispatcher->subscribe('foo', new Dispenser(function ($a, $b) {
+    return $a.'1foo1'.$b;
 }));
 
-$event->subscribe('bar', new Dispenser(function ($a, $b) {
-    return 'bar' . $a . $b;
+$dispatcher->subscribe('foo', new Dispenser(function ($a, $b) {
+    return $a.'2foo2'.$b;
 }));
 
-$event->dispense(['foo', 'a', 'b']); // [fooab]
+$dispatcher->subscribe('bar', new Dispenser(function ($a, $b) {
+    return $a.'bar'.$b;
+}));
 
-$event->dispense(['bar', 'a', 'b']); // [barab]
+$dispatcher->dispense('bar', 'a', 'b'); // ['abarb']
+$dispatcher->dispense('foo', 'a', 'b'); // ['a1foo1b', 'a2foo2b']
 ```
 
 > The above implementation works as an event subscriber and publisher.
 
-> For availability, the `EventDispenser` is also available under the `Bhittani\Dispenser` namespace.
+> For availability, the `Dispatcher` is also available under the `Bhittani\Dispenser` namespace.
 
 ## Changelog
 
